@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include <QtWidgets>
+#include <QTimer>
 
 #include "Pawn.h"
 
@@ -16,6 +17,11 @@ Pawn::Pawn(QColor color, const int x, const int y) {
   this->color_ = color;
   x_ = x;
   y_ = y;
+}
+
+void Pawn::move(int new_x, int new_y){
+    x_ = new_x;
+    y_ = new_y;
 }
 
 QRectF Pawn::boundingRect() const
@@ -42,30 +48,6 @@ void Pawn::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->drawEllipse(QRect(this->x_, this->y_, this->width_, this->width_));
     painter->setBrush(b);
 }
-
-void Pawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    emit PawnSelected(this);
-    emit DeletePawn(this);
-
-    if(event->modifiers() == Qt::ShiftModifier){
-        emit DrawLine(this);
-    }
-
-    this->color_.setRgb(rand()%256, rand()%256,rand()%256);
-    update();
-}
-
-/**
-  Calculates the distance between this Pawn and another Pawn.
-  @param other Pawn object to calculate the distance to
-*/
-double Pawn::Distance(const Pawn &other) const {
-  double distance = (x_ - other.get_x()) * (x_ - other.get_x());
-  distance += (y_ - other.y_) * (y_ - other.y_);
-  return sqrt(distance);
-}
-
 
 /**
   Makes it so the == operator will have the behavior that you

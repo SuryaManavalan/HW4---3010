@@ -6,11 +6,14 @@
 #include <QDebug>
 #include <QTime>
 #include <string>
+#include <QTimer>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "numplayersdialog.h"
 #include "pawn.h"
+#include "player.h"
+#include "manager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     npd = new NumPlayersDialog();
     npd->setModal(true);
     npd->exec();
+
+    m = new Manager();
 
     ui->setupUi(this);
     QGraphicsView * view = ui->graphicsView;
@@ -40,21 +45,6 @@ MainWindow::MainWindow(QWidget *parent)
     for(int i = 1; i < 10; i++){
         scene->addLine(44*i +2*i,0,44*i +2*i,500);
     }
-
-    // testing square to Coord
-
-    std::vector<int> coord = squareToCoord(84);
-
-    QGraphicsRectItem* rectItem = new QGraphicsRectItem(coord[0], coord[1], 10, 10);
-
-    QPen pen(Qt::black);
-    QBrush brush(Qt::blue);
-    rectItem->setPen(pen);
-    rectItem->setBrush(brush);
-
-    scene->addItem(rectItem);
-
-    qDebug() << coordToSquare(squareToCoord(84));
 
     // draw ladder from 7 to 100
 
@@ -98,9 +88,14 @@ void MainWindow::initPawns(int n){
         default:
             break;
         }
-        Pawn * p1 = new Pawn(color, i*25, 5);
+        Pawn * p1 = new Pawn(color, squareToCoord(1+i)[0],  squareToCoord(1+i)[1]);
+//        Pawn * p1 = new Pawn(color, i*25, 5);
+        Player * player = new Player(i+1, p1);
 
-        startScene->addItem(p1);
+        m->addPlayer(player);
+
+        scene->addItem(p1);
+//        startScene->addItem(p1);
     }
 }
 
@@ -149,3 +144,60 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_roll_clicked()
+{
+    pawnMoving = true;
+
+    int sqr = rand()%5 +1;
+    qDebug() << sqr;
+    ui->rollLabel->setText(QString::number(sqr));
+
+    Player *player = m->getPlayers()[m->getTurn()-1];
+    Pawn *pawn = player->getPawn();
+
+    sqr = player->getCurrSqr() + sqr;
+
+    // Define the final position of the Pawn
+    int final_x = squareToCoord(sqr)[0];
+    int final_y = squareToCoord(sqr)[1];
+    int speed = 10;
+
+    // Create a QTimer object
+    QTimer* timer = new QTimer(this);
+
+    // Set the interval (in milliseconds) to update the position
+    int interval = 100; // Update the position every 100 milliseconds
+    timer->setInterval(interval);
+
+    // Connect the timer to a function that updates the position of the Pawn
+    connect(timer, &QTimer::timeout, [=]() {
+        if(qAbs(pawn->get_x() - final_x) < 7 && qAbs(pawn->get_y() - final_y) < 7 ){
+            timer->stop(); // Stop the timer
+            pawnMoving = false;
+        }
+
+        // Calculate the distance between the current position and the final position
+        int dx = final_x - pawn->get_x();
+        int dy = final_y - pawn->get_y();
+        float distance = std::sqrt(dx*dx + dy*dy);
+
+        // Calculate the unit vector pointing from the current position to the final position
+        float ux = dx / distance;
+        float uy = dy / distance;
+
+        int new_x = pawn->get_x() + speed*ux; // Calculate the new x position based on the speed
+        int new_y = pawn->get_y() + speed*uy; // Keep the same y position
+        pawn->move(new_x, new_y); // Update the position of the Pawn
+        scene->update(); // Repaint the scene to show the updated position
+    });
+
+    // Start the timer
+    timer->start();
+
+    player->setPrevSqr(player->getCurrSqr());
+    player->setCurrSqr(sqr);
+
+    m->nextTurn();
+}
+

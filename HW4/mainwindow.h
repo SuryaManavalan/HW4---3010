@@ -8,6 +8,7 @@
 #include <QMainWindow>
 
 #include "numplayersdialog.h"
+#include "manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,9 +27,15 @@ public:
 
     void initPawns(int);
 
+private slots:
+    void on_roll_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     NumPlayersDialog *npd;
+    Manager* m;
+
+    bool pawnMoving = false;
 };
 #endif // MAINWINDOW_H

@@ -14,6 +14,9 @@ public:
     int get_x() const { return x_; }  // inline member function
     int get_y() const { return y_; }  // inline member function
 
+    void set_x(int new_x) {x_ = new_x;};
+    void set_y(int new_y) {y_ = new_y;};
+
     double Distance(const Pawn &other) const;  // member function
 
     QRectF boundingRect() const override;
@@ -22,6 +25,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
 
     static int get_width() { return width_; };
+
+    void move(int new_x, int new_y);
 
 // Day 2, Task 5, Step 1 here.
 // @TODO:  Add a custom signal and the mousePressEvent function.
@@ -46,10 +51,7 @@ signals:
 
     void DeletePawn(Pawn * p);
 
-    void DrawLine(Pawn * p);
-
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };  // class Pawn
 
 

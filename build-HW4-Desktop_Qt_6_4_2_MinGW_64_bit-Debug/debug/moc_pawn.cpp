@@ -26,14 +26,13 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_Pawn_t {
-    uint offsetsAndSizes[14];
+    uint offsetsAndSizes[12];
     char stringdata0[5];
     char stringdata1[13];
     char stringdata2[1];
     char stringdata3[6];
     char stringdata4[2];
     char stringdata5[11];
-    char stringdata6[9];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_Pawn_t::offsetsAndSizes) + ofs), len 
@@ -44,16 +43,14 @@ Q_CONSTINIT static const qt_meta_stringdata_Pawn_t qt_meta_stringdata_Pawn = {
         QT_MOC_LITERAL(18, 0),  // ""
         QT_MOC_LITERAL(19, 5),  // "Pawn*"
         QT_MOC_LITERAL(25, 1),  // "p"
-        QT_MOC_LITERAL(27, 10),  // "DeletePawn"
-        QT_MOC_LITERAL(38, 8)   // "DrawLine"
+        QT_MOC_LITERAL(27, 10)   // "DeletePawn"
     },
     "Pawn",
     "PawnSelected",
     "",
     "Pawn*",
     "p",
-    "DeletePawn",
-    "DrawLine"
+    "DeletePawn"
 };
 #undef QT_MOC_LITERAL
 } // unnamed namespace
@@ -64,20 +61,18 @@ Q_CONSTINIT static const uint qt_meta_data_Pawn[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       3,       // signalCount
+       2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   32,    2, 0x06,    1 /* Public */,
-       5,    1,   35,    2, 0x06,    3 /* Public */,
-       6,    1,   38,    2, 0x06,    5 /* Public */,
+       1,    1,   26,    2, 0x06,    1 /* Public */,
+       5,    1,   29,    2, 0x06,    3 /* Public */,
 
  // signals: parameters
-    QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, 0x80000000 | 3,    4,
 
@@ -98,9 +93,6 @@ Q_CONSTINIT const QMetaObject Pawn::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<Pawn *, std::false_type>,
         // method 'DeletePawn'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<Pawn *, std::false_type>,
-        // method 'DrawLine'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<Pawn *, std::false_type>
     >,
     nullptr
@@ -114,7 +106,6 @@ void Pawn::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         switch (_id) {
         case 0: _t->PawnSelected((*reinterpret_cast< std::add_pointer_t<Pawn*>>(_a[1]))); break;
         case 1: _t->DeletePawn((*reinterpret_cast< std::add_pointer_t<Pawn*>>(_a[1]))); break;
-        case 2: _t->DrawLine((*reinterpret_cast< std::add_pointer_t<Pawn*>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -128,13 +119,6 @@ void Pawn::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
             }
             break;
         case 1:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
-            case 0:
-                *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType::fromType< Pawn* >(); break;
-            }
-            break;
-        case 2:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
             case 0:
@@ -155,13 +139,6 @@ void Pawn::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
             using _t = void (Pawn::*)(Pawn * );
             if (_t _q_method = &Pawn::DeletePawn; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 1;
-                return;
-            }
-        }
-        {
-            using _t = void (Pawn::*)(Pawn * );
-            if (_t _q_method = &Pawn::DrawLine; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
-                *result = 2;
                 return;
             }
         }
@@ -189,13 +166,13 @@ int Pawn::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 2;
     }
     return _id;
 }
@@ -212,13 +189,6 @@ void Pawn::DeletePawn(Pawn * _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
-}
-
-// SIGNAL 2
-void Pawn::DrawLine(Pawn * _t1)
-{
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

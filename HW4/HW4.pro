@@ -11,13 +11,17 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    manager.cpp \
     numplayersdialog.cpp \
-    pawn.cpp
+    pawn.cpp \
+    player.cpp
 
 HEADERS += \
     mainwindow.h \
+    manager.h \
     numplayersdialog.h \
-    pawn.h
+    pawn.h \
+    player.h
 
 FORMS += \
     mainwindow.ui \

@@ -11,11 +11,13 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -129,6 +131,16 @@ public:
     QLabel *s67_2;
     QGraphicsView *graphicsView;
     QGraphicsView *startSpace;
+    QFrame *playerDispFrame;
+    QLabel *playerDispLabel;
+    QPushButton *undo;
+    QPushButton *reroll;
+    QPushButton *roll;
+    QFrame *rollFrame;
+    QLabel *rollLabel;
+    QPushButton *startButton;
+    QPushButton *newButton;
+    QPushButton *endButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -651,10 +663,52 @@ public:
         startSpace = new QGraphicsView(centralwidget);
         startSpace->setObjectName("startSpace");
         startSpace->setGeometry(QRect(20, 470, 201, 51));
+        playerDispFrame = new QFrame(centralwidget);
+        playerDispFrame->setObjectName("playerDispFrame");
+        playerDispFrame->setGeometry(QRect(600, 20, 91, 61));
+        playerDispFrame->setFrameShape(QFrame::StyledPanel);
+        playerDispFrame->setFrameShadow(QFrame::Raised);
+        playerDispLabel = new QLabel(playerDispFrame);
+        playerDispLabel->setObjectName("playerDispLabel");
+        playerDispLabel->setGeometry(QRect(20, 10, 121, 41));
+        undo = new QPushButton(centralwidget);
+        undo->setObjectName("undo");
+        undo->setGeometry(QRect(560, 110, 171, 51));
+        reroll = new QPushButton(centralwidget);
+        reroll->setObjectName("reroll");
+        reroll->setGeometry(QRect(560, 180, 171, 51));
+        roll = new QPushButton(centralwidget);
+        roll->setObjectName("roll");
+        roll->setGeometry(QRect(560, 250, 171, 51));
+        rollFrame = new QFrame(centralwidget);
+        rollFrame->setObjectName("rollFrame");
+        rollFrame->setGeometry(QRect(600, 330, 91, 51));
+        rollFrame->setFrameShape(QFrame::StyledPanel);
+        rollFrame->setFrameShadow(QFrame::Raised);
+        rollLabel = new QLabel(rollFrame);
+        rollLabel->setObjectName("rollLabel");
+        rollLabel->setGeometry(QRect(30, 10, 51, 31));
+        startButton = new QPushButton(centralwidget);
+        startButton->setObjectName("startButton");
+        startButton->setGeometry(QRect(560, 400, 181, 41));
+        newButton = new QPushButton(centralwidget);
+        newButton->setObjectName("newButton");
+        newButton->setGeometry(QRect(560, 450, 181, 41));
+        endButton = new QPushButton(centralwidget);
+        endButton->setObjectName("endButton");
+        endButton->setGeometry(QRect(560, 500, 181, 41));
         MainWindow->setCentralWidget(centralwidget);
         graphicsView->raise();
         gridLayoutWidget->raise();
         startSpace->raise();
+        playerDispFrame->raise();
+        undo->raise();
+        reroll->raise();
+        roll->raise();
+        rollFrame->raise();
+        startButton->raise();
+        newButton->raise();
+        endButton->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 800, 24));
@@ -771,6 +825,14 @@ public:
         s70->setText(QCoreApplication::translate("MainWindow", "70", nullptr));
         s60->setText(QCoreApplication::translate("MainWindow", "60", nullptr));
         s67_2->setText(QCoreApplication::translate("MainWindow", "68", nullptr));
+        playerDispLabel->setText(QCoreApplication::translate("MainWindow", "Player 1", nullptr));
+        undo->setText(QCoreApplication::translate("MainWindow", "Undo", nullptr));
+        reroll->setText(QCoreApplication::translate("MainWindow", "ReRoll", nullptr));
+        roll->setText(QCoreApplication::translate("MainWindow", "Roll", nullptr));
+        rollLabel->setText(QString());
+        startButton->setText(QCoreApplication::translate("MainWindow", "Start Game", nullptr));
+        newButton->setText(QCoreApplication::translate("MainWindow", "New Game", nullptr));
+        endButton->setText(QCoreApplication::translate("MainWindow", "End Game", nullptr));
     } // retranslateUi
 
 };
