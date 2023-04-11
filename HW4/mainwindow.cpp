@@ -71,6 +71,7 @@ void MainWindow::initPawns(int n){
 
     for(int i = 0; i < n; i++){
         QColor color = QColor();
+        color.setAlpha(0x90);
         switch (i) {
         case 0:
             color.setRed(255);
@@ -91,6 +92,7 @@ void MainWindow::initPawns(int n){
         Pawn * p1 = new Pawn(color, squareToCoord(1+i)[0],  squareToCoord(1+i)[1]);
 //        Pawn * p1 = new Pawn(color, i*25, 5);
         Player * player = new Player(i+1, p1);
+        player->setCurrSqr(1+i);
 
         m->addPlayer(player);
 
@@ -147,57 +149,73 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_roll_clicked()
 {
-    pawnMoving = true;
+    if(!pawnMoving){
+        pawnMoving = true;
 
-    int sqr = rand()%5 +1;
-    qDebug() << sqr;
-    ui->rollLabel->setText(QString::number(sqr));
+        int sqr = rand()%5 +1;
+        qDebug() << sqr;
+        ui->rollLabel->setText(QString::number(sqr));
 
-    Player *player = m->getPlayers()[m->getTurn()-1];
-    Pawn *pawn = player->getPawn();
+        Player *player = m->getPlayers()[m->getTurn()-1];
+        Pawn *pawn = player->getPawn();
 
-    sqr = player->getCurrSqr() + sqr;
+        int newSQR = sqr + coordToSquare({pawn->get_x(), pawn->get_y()});
+        int real_x = squareToCoord(sqr + coordToSquare({pawn->get_x(), pawn->get_y()}))[0];
+        int real_y = squareToCoord(sqr + coordToSquare({pawn->get_x(), pawn->get_y()}))[1];
 
-    // Define the final position of the Pawn
-    int final_x = squareToCoord(sqr)[0];
-    int final_y = squareToCoord(sqr)[1];
-    int speed = 10;
 
-    // Create a QTimer object
-    QTimer* timer = new QTimer(this);
+        sqr = player->getCurrSqr() + sqr;
 
-    // Set the interval (in milliseconds) to update the position
-    int interval = 100; // Update the position every 100 milliseconds
-    timer->setInterval(interval);
+        // Define the final position of the Pawn
+        int final_x = squareToCoord(sqr)[0];
+        int final_y = squareToCoord(sqr)[1];
+        int speed = 5;
 
-    // Connect the timer to a function that updates the position of the Pawn
-    connect(timer, &QTimer::timeout, [=]() {
-        if(qAbs(pawn->get_x() - final_x) < 7 && qAbs(pawn->get_y() - final_y) < 7 ){
-            timer->stop(); // Stop the timer
-            pawnMoving = false;
-        }
+        // Create a QTimer object
+        QTimer* timer = new QTimer(this);
 
-        // Calculate the distance between the current position and the final position
-        int dx = final_x - pawn->get_x();
-        int dy = final_y - pawn->get_y();
-        float distance = std::sqrt(dx*dx + dy*dy);
+        // Set the interval (in milliseconds) to update the position
+        int interval = 50; // Update the position every 100 milliseconds
+        timer->setInterval(interval);
 
-        // Calculate the unit vector pointing from the current position to the final position
-        float ux = dx / distance;
-        float uy = dy / distance;
+        // Connect the timer to a function that updates the position of the Pawn
 
-        int new_x = pawn->get_x() + speed*ux; // Calculate the new x position based on the speed
-        int new_y = pawn->get_y() + speed*uy; // Keep the same y position
-        pawn->move(new_x, new_y); // Update the position of the Pawn
-        scene->update(); // Repaint the scene to show the updated position
-    });
 
-    // Start the timer
-    timer->start();
+        connect(timer, &QTimer::timeout, [=]() {
+            // Calculate the distance between the current position and the final position
+            int dx = (final_x - pawn->get_x());
+            int dy = (final_y - pawn->get_y());
+            float distance = std::sqrt(dx*dx + dy*dy);
 
-    player->setPrevSqr(player->getCurrSqr());
-    player->setCurrSqr(sqr);
+            qDebug() << "dx,dy:  : " << dx << ", " << dy;
+            qDebug() << "distence : " << distance;
 
-    m->nextTurn();
+
+            // Calculate the unit vector pointing from the current position to the final position
+            float ux = dx / distance;
+            float uy = dy / distance;
+
+            int new_x = pawn->get_x() + speed*ux; // Calculate the new x position based on the speed
+            int new_y = pawn->get_y() + speed*uy; // Keep the same y position
+            pawn->move(new_x, new_y); // Update the position of the Pawn
+            scene->update(); // Repaint the scene to show the updated position
+
+            if(distance < 10){//(qAbs(pawn->get_x() - final_x) < 7 && qAbs(pawn->get_y() - final_y) < 7 ){
+                timer->stop(); // Stop the timer
+
+                pawn->move(real_x, real_y);
+                scene->update();
+
+                player->setPrevSqr(player->getCurrSqr());
+                player->setCurrSqr(newSQR);
+
+                m->nextTurn();
+                pawnMoving = false;
+            }
+        });
+
+        // Start the timer
+        timer->start();
+    }
 }
 
